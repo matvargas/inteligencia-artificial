@@ -1,5 +1,4 @@
 import sys
-from typing import List, Any
 
 
 class MCell:
@@ -9,36 +8,51 @@ class MCell:
         self.value = value
 
 
+def print_matrix(m):
+    for l in m:
+        for char in l:
+            print(char, end='')
+        print()
+
+
+def define_possible_entries(shed_map, w):
+    start_x = 0
+    start_y = 0
+    star_point = True
+    for i in shed_map:
+        for j in i:
+            if star_point:
+                start_x = i
+                start_y = j
+
+
 try:
     filepath = sys.argv[1]
     f = open(filepath, "r")
-except:
+except FileNotFoundError:
     print("Could not open the file" + filepath)
 finally:
     with open(filepath) as f:
         row = f.readline()
-        xdim = int(row[0])  # Defines x dimension of map
-        ydim = int(row[2])  # Defines y dimension of map
+        x_dim = int(row[0])  # Defines x dimension of map
+        y_dim = int(row[2])  # Defines y dimension of map
         w = int(row[4])  # Defines how far can the robot goes without reach a control point
 
-        xcount = 0
-        ycount = 0
-        matrix = []
-        list = []
+        x_count = 0
+        y_count = 0
+        arr = []
+        shed_map = []  # Maps the shed into a matrix of chars
 
         while True:
             c = f.read(1)
             if not c:
                 break
             if c != '' and ord(c) != 10:
-                # TODO: Alter c to MCell type
-                list.append(c)
-                ycount += 1
-            if ycount % ydim == 0:
-                matrix.append(list)
-                list = []
+                arr.append(c)
+                y_count += 1
+            if y_count % y_dim == 0:
+                shed_map.append(list)
+                arr = []
 
-    for list in matrix:
-        for char in list:
-            print(char, end='')
-        print()
+        # TODO fix this function
+        # define_possible_entries(shed_map, w)
