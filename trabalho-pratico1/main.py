@@ -39,7 +39,7 @@ def define_entrances(x_dim, y_dim):
 
 
 try:
-    filepath = sys.argv[1]
+    filepath = sys.argv[2]
     f = open(filepath, "r")
 except FileNotFoundError:
     print("Could not open the file" + filepath)
@@ -68,9 +68,9 @@ finally:
 
         entrances = define_entrances(x_dim, y_dim)
 
-        if sys.argv[2] == "BFS":
+        if sys.argv[1] == "BFS":
             bfs(shed_map, entrances, w)
-        elif sys.argv[2] == "DFS":
+        elif sys.argv[1] == "DFS":
             print("DFS")
-        elif sys.argv[2] == "other":
+        elif sys.argv[1] == "other":
             print("other")
