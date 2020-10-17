@@ -1,0 +1,5 @@
+# MAP ENTITIES
+OBSTACLE = '*'
+CONTROL_POINT = '#'
+GOAL = '$'
+FREE_PATH = '.'

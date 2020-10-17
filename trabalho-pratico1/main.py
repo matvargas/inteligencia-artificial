@@ -1,10 +1,6 @@
 import sys
-
-# MAP ENTITIES
-OBSTACLE = '*'
-CONTROL_POINT = '#'
-GOAL = '$'
-FREE_PATH = '.'
+from bfs import bfs
+from common import *
 
 shed_map = []  # Maps the shed into a matrix of chars
 
@@ -70,4 +66,11 @@ finally:
                     shed_map.append(arr)
                     arr = []
 
-        define_entrances(x_dim, y_dim)
+        entrances = define_entrances(x_dim, y_dim)
+
+        if sys.argv[2] == "BFS":
+            bfs(shed_map, entrances, w)
+        elif sys.argv[2] == "DFS":
+            print("DFS")
+        elif sys.argv[2] == "other":
+            print("other")
