@@ -1,5 +1,13 @@
 import sys
 
+# MAP ENTITIES
+OBSTACLE = '*'
+CONTROL_POINT = '#'
+GOAL = '$'
+FREE_PATH = '.'
+
+shed_map = []  # Maps the shed into a matrix of chars
+
 
 class MCell:
     def __init__(self, xpos, ypos, value):
@@ -15,15 +23,30 @@ def print_matrix(m):
         print()
 
 
-def define_possible_entries(shed_map, w):
-    start_x = 0
-    start_y = 0
-    star_point = True
-    for i in shed_map:
-        for j in i:
-            if star_point:
-                start_x = i
-                start_y = j
+def define_entries(x_dim, y_dim):
+    entries = []
+
+    # Adds all possible entries from north side of shed
+    for i in range(0, y_dim):
+        if shed_map[0][i] != OBSTACLE:
+            entries.append([0, i])
+
+    # Adds all possible entries from south side of shed
+    for i in range(0, y_dim):
+        if shed_map[x_dim-1][i] != OBSTACLE:
+            entries.append([x_dim-1, i])
+
+    # Adds all possible entries from west side of shed
+    for i in range(0, x_dim):
+        if shed_map[i][0] != OBSTACLE:
+            entries.append([i, 0])
+
+    # Adds all possible entries from east side of shed
+    for i in range(0, x_dim):
+        if shed_map[i][y_dim-1] != OBSTACLE:
+            entries.append([i, y_dim-1])
+
+    return entries
 
 
 try:
@@ -41,7 +64,6 @@ finally:
         x_count = 0
         y_count = 0
         arr = []
-        shed_map = []  # Maps the shed into a matrix of chars
 
         while True:
             c = f.read(1)
@@ -51,8 +73,8 @@ finally:
                 arr.append(c)
                 y_count += 1
             if y_count % y_dim == 0:
-                shed_map.append(list)
-                arr = []
+                if arr:
+                    shed_map.append(arr)
+                    arr = []
 
-        # TODO fix this function
-        # define_possible_entries(shed_map, w)
+        print(define_entries(x_dim, y_dim))
