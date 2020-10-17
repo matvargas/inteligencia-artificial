@@ -9,13 +9,6 @@ FREE_PATH = '.'
 shed_map = []  # Maps the shed into a matrix of chars
 
 
-class MCell:
-    def __init__(self, xpos, ypos, value):
-        self.xpos = xpos
-        self.ypos = ypos
-        self.value = value
-
-
 def print_matrix(m):
     for l in m:
         for char in l:
@@ -23,25 +16,25 @@ def print_matrix(m):
         print()
 
 
-def define_entries(x_dim, y_dim):
+def define_entrances(x_dim, y_dim):
     entries = []
 
-    # Adds all possible entries from north side of shed
+    # Adds all possible entrances from north side of shed
     for i in range(0, y_dim):
         if shed_map[0][i] != OBSTACLE:
             entries.append([0, i])
 
-    # Adds all possible entries from south side of shed
+    # Adds all possible entrances from south side of shed
     for i in range(0, y_dim):
         if shed_map[x_dim-1][i] != OBSTACLE:
             entries.append([x_dim-1, i])
 
-    # Adds all possible entries from west side of shed
+    # Adds all possible entrances from west side of shed
     for i in range(0, x_dim):
         if shed_map[i][0] != OBSTACLE:
             entries.append([i, 0])
 
-    # Adds all possible entries from east side of shed
+    # Adds all possible entrances from east side of shed
     for i in range(0, x_dim):
         if shed_map[i][y_dim-1] != OBSTACLE:
             entries.append([i, y_dim-1])
@@ -77,4 +70,4 @@ finally:
                     shed_map.append(arr)
                     arr = []
 
-        print(define_entries(x_dim, y_dim))
+        define_entrances(x_dim, y_dim)
