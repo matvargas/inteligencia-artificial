@@ -7,23 +7,58 @@ def add_distinct(a, b, v):
             a.append(i)
 
 
+def print_queue(q):
+    for c in q:
+        print("[{},{}]".format(c[0], c[1]), end='')
+    print()
+
+
+def retrieve_shortest_path(path, goal_cell, entrance, shed_map):
+
+    steps = 2 # Starting from 2 since the loop will not iterate over entrance and the goal cell
+    cntrl_pnts = 0
+
+    if shed_map[entrance[0]][entrance[1]] == CONTROL_POINT:
+        cntrl_pnts += 1
+
+    shortest_path = [[goal_cell[0], goal_cell[1]]]
+
+    c = goal_cell[2]
+    # print(c)
+    while c != entrance:
+
+        for i in path:
+            if c[0] == i[0] and c[1] == i[1]:
+                steps += 1
+                if shed_map[c[0]][c[1]] == CONTROL_POINT:
+                    cntrl_pnts += 1
+                c = i[2]
+                shortest_path.append([c[0], c[1]])
+                # print(c)
+
+    print(steps, end=' ')
+    print(cntrl_pnts, end=' ')
+    print(entrance)
+
+    # print(shortest_path)
+
+
 def define_reachable_cells(cell, x_dim, y_dim, shed_map):
     reachable_cells = []
 
-    print("From ", end='')
-    print(cell)
+    print("From [{},{}]".format(cell[0], cell[1]))
 
     if cell[1] - 1 >= 0 and shed_map[cell[0]][cell[1] - 1] != OBSTACLE:
-        reachable_cells.append([cell[0], cell[1] - 1])
+        reachable_cells.append([cell[0], cell[1] - 1, [cell[0], cell[1]]])
 
     if cell[1] + 1 < y_dim and shed_map[cell[0]][cell[1] + 1] != OBSTACLE:
-        reachable_cells.append([cell[0], cell[1] + 1])
+        reachable_cells.append([cell[0], cell[1] + 1, [cell[0], cell[1]]])
 
     if cell[0] + 1 < x_dim and shed_map[cell[0] + 1][cell[1]] != OBSTACLE:
-        reachable_cells.append([cell[0] + 1, cell[1]])
+        reachable_cells.append([cell[0] + 1, cell[1], [cell[0], cell[1]]])
 
     print("Reachable cells are: ", end='')
-    print(reachable_cells)
+    print_queue(reachable_cells)
     return reachable_cells
 
 
@@ -34,29 +69,27 @@ def bfs(shed_map, entrances, w):
     y_dim = len(shed_map[0])
 
     for entrance in entrances:
-        movements = 0
-        loc_count = 0
-        starvation = 0
 
-        print("Starting from ", end='')
+        starvation = 0
+        path = []
+
+        print("====== >>>>> Starting from <<<<< ========= ", end='')
         print(entrance)
 
         visited = [([0] * y_dim) for i in range(x_dim)]
         queue = []
 
-        if shed_map[entrance[0]][entrance[1]] != CONTROL_POINT:
-            starvation += 1
-        elif shed_map[entrance[0]][entrance[1]] == CONTROL_POINT:
-            loc_count += 1
-
-        movements += 1
-
         queue.append(entrance)
 
         while len(queue) != 0:
             cell = queue.pop(0)
-            print("Current cell: ", end='')
-            print(cell)
+            print("Current cell: [{},{}]".format(cell[0], cell[1]))
+
+            print("Adding cell to path")
+            if cell not in path:
+                path.append(cell)
+
+            print("Path: {}".format(path))
 
             if visited[cell[0]][cell[1]] != 1:
                 print("Not visited yet, visiting...")
@@ -64,22 +97,29 @@ def bfs(shed_map, entrances, w):
 
                 if shed_map[cell[0]][cell[1]] == CONTROL_POINT:
                     starvation = 0
-                    loc_count += 1
+                else:
+                    starvation += 1
+                    if starvation > w:
+                        print("Starved")
+                        starvation = 0
+                        break
 
-                movements += 1
+                print("Starvation: ", end='')
+                print(starvation)
 
                 if shed_map[cell[0]][cell[1]] == GOAL:
+                    retrieve_shortest_path(path, cell, entrance, shed_map)
                     break
 
                 reachable_cells = define_reachable_cells(cell, x_dim, y_dim, shed_map)
                 add_distinct(queue, reachable_cells, visited)
-                print(queue)
+
+                print("Queue: ", end='')
+                print_queue(queue)
+
             else:
                 print("Already visited")
 
-        print(movements, end=' ')
-        print(loc_count, end=' ')
-        print(entrance)
 
 
 

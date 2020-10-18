@@ -44,11 +44,20 @@ try:
 except FileNotFoundError:
     print("Could not open the file" + filepath)
 finally:
+    v = []
+    s = ""
     with open(filepath) as f:
         row = f.readline()
-        x_dim = int(row[0])  # Defines x dimension of map
-        y_dim = int(row[2])  # Defines y dimension of map
-        w = int(row[4])  # Defines how far can the robot goes without reach a control point
+        for i in row:
+            if ord(i) != 32 and ord(i) != 10:
+                s += i
+            else:
+                v.append(s)
+                s = ""
+
+        x_dim = int(v[0])  # Defines x dimension of map
+        y_dim = int(v[1])  # Defines y dimension of map
+        w = int(v[2])  # Defines how far can the robot goes without reach a control point
 
         x_count = 0
         y_count = 0
