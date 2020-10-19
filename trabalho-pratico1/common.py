@@ -3,3 +3,6 @@ OBSTACLE = '*'
 CONTROL_POINT = '#'
 GOAL = '$'
 FREE_PATH = '.'
+
+# PROJECT PROPERTIES
+LOG = False
