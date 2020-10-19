@@ -1,6 +1,7 @@
 import sys
 from bfs import bfs
 from a_star import a_star
+from dfs import dfs
 from common import *
 
 shed_map = []  # Maps the shed into a matrix of chars
@@ -77,11 +78,12 @@ finally:
 
         entrances = define_entrances(x_dim, y_dim)
 
-        if sys.argv[1] == "BFS":
+        if sys.argv[1] == "bfs":
             bfs(shed_map, entrances, w)
-        elif sys.argv[1] == "DFS":
-            print("DFS")
-        elif sys.argv[1] == "A_STAR":
+        elif sys.argv[1] == "dfs":
+            dfs(shed_map, entrances, w)
+        elif sys.argv[1] == "a_star":
             a_star(filepath, entrances, w)
         else:
-            print("other")
+            print("Program usage ./main.py <bfs|dfs|a_star> <path to input>")
+            exit()

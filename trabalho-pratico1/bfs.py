@@ -8,12 +8,6 @@ def print_visited(v):
         print()
 
 
-def print_queue(q):
-    for c in q:
-        print("[{},{}]".format(c[0], c[1]), end='')
-    print()
-
-
 def cell_type(shed_map, curr):
     return shed_map[curr[0]][curr[1]]
 
